@@ -263,5 +263,6 @@ func buildResolverConfig() (*resolver.Config, error) {
 		ConcurrentFetches:  config.Resolver.ConcurrentFetches,
 		ResolverEntityID:   getEnvWithDefault("RESOLVER_ENTITY_ID", "https://resolver.example.org"),
 		EnableSigning:      getEnvBoolWithDefault("ENABLE_SIGNING", true),
+		SkipTLSVerify:      getEnvBoolWithDefault("SKIP_TLS_VERIFY", false),
 	}, nil
 }

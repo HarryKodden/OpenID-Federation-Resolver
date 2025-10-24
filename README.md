@@ -65,6 +65,7 @@ All configuration is done via environment variables. No config files are needed.
 | `VALIDATE_SIGNATURES`        | Whether to validate JWT signatures           | true                           | bool   | No       |
 | `ALLOW_SELF_SIGNED`          | Whether to allow self-signed certificates    | true                           | bool   | No       |
 | `CONCURRENT_FETCHES`         | Maximum concurrent fetch operations          | 10                             | int    | No       |
+| `SKIP_TLS_VERIFY`            | Skip TLS certificate verification (dev/test) | false                          | bool   | No       |
 | `METRICS_ENABLED`            | Whether to enable Prometheus metrics         | true                           | bool   | No       |
 | `HEALTH_CHECK_TRUST_ANCHORS` | Whether health checks include trust anchors  | true                           | bool   | No       |
 
@@ -517,6 +518,7 @@ Client Request → HTTP Server → Authorization Check → Cache Check → Resol
 - **Trust Anchor Validation**: Only configure trusted federation authorities
 - **Network Security**: Restrict access to resolver endpoints
 - **Environment Variables**: Secure storage of sensitive configuration
+- **TLS Verification**: Only set `SKIP_TLS_VERIFY=true` in development/testing environments with self-signed certificates
 
 ## Troubleshooting
 

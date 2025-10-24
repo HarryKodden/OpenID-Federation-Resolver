@@ -16,6 +16,7 @@ type Config struct {
 	ConcurrentFetches  int
 	ResolverEntityID   string // New: Resolver's own entity identifier
 	EnableSigning      bool   // New: Whether resolver can sign responses
+	SkipTLSVerify      bool   // New: Whether to skip TLS certificate verification
 }
 
 type FederationResolver struct {

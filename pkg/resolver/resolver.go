@@ -5,6 +5,7 @@ import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rsa"
+	"crypto/tls"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -42,15 +43,28 @@ type JWKSet struct {
 }
 
 func NewFederationResolver(config *Config) (*FederationResolver, error) {
+	// Create HTTP client with TLS configuration
+	httpClient := &http.Client{
+		Timeout: config.RequestTimeout,
+	}
+
+	// Configure TLS settings if SkipTLSVerify is enabled
+	if config.SkipTLSVerify {
+		httpClient.Transport = &http.Transport{
+			TLSClientConfig: &tls.Config{
+				InsecureSkipVerify: true,
+			},
+		}
+		log.Printf("TLS certificate verification disabled for development/testing")
+	}
+
 	resolver := &FederationResolver{
 		config:            config,
 		entityCache:       cache.New(24*time.Hour, 30*time.Minute), // default expiration 24h, cleanup every 30min
 		chainCache:        cache.New(24*time.Hour, 30*time.Minute),
 		cachedEntities:    make(map[string]*CachedEntityStatement),
 		registeredAnchors: make(map[string]*TrustAnchorRegistration),
-		httpClient: &http.Client{
-			Timeout: config.RequestTimeout,
-		},
+		httpClient:        httpClient,
 	}
 
 	// Initialize resolver keys if signing is enabled
